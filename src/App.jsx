@@ -1,5 +1,4 @@
-// /home/radhe/Projects/quiz_app/src/App.jsx
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import QuestionCard from "./components/QuestionCard";
 import ResultScreen from "./components/ResultScreen";
@@ -11,8 +10,6 @@ function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  // isAnswerCorrect state is no longer strictly needed here as we calculate it when storing results
-  // const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
   const [timeLeft, setTimeLeft] = useState(QUIZ_TIME_LIMIT);
   const [results, setResults] = useState([]);
 
@@ -22,7 +19,6 @@ function App() {
     setScore(0);
     setCurrentQuestion(0);
     setSelectedAnswer(null);
-    // setIsAnswerCorrect(false); // No longer needed here
     setTimeLeft(QUIZ_TIME_LIMIT);
     setResults([]);
   };
@@ -102,17 +98,23 @@ function App() {
   const renderContent = () => {
     switch (quizState) {
       case "start":
-        return <StartScreen onStartQuizb={handleStartQuiz} />;
+        // Pass necessary props to StartScreen
+        return (
+          <StartScreen
+            onStartQuizb={handleStartQuiz}
+            totalQuestions={quizData.length}
+            timeLimit={QUIZ_TIME_LIMIT}
+          />
+        );
       case "active":
-        const isCorrectForCard =
-          selectedAnswer === quizData[currentQuestion]?.correctAnswer;
+        // isAnswerCorrect prop is not used in QuestionCard, removing
         return (
           <QuestionCard
             questionData={quizData[currentQuestion]}
             onAnswerSelect={handleAnswerSelection}
             onNextQuestion={handleNextQuestion}
             selectedAnswer={selectedAnswer}
-            isAnswerCorrect={isCorrectForCard}
+            // isAnswerCorrect={isCorrectForCard} // Removed as not used in QuestionCard
             timeLeft={timeLeft}
             setTimeLeft={setTimeLeft}
             handleTimeOut={handleTimeOut}
@@ -130,7 +132,14 @@ function App() {
           />
         );
       default:
-        return <StartScreen onStartQuizb={handleStartQuiz} />;
+        // Pass necessary props to StartScreen in default case too
+        return (
+          <StartScreen
+            onStartQuizb={handleStartQuiz}
+            totalQuestions={quizData.length}
+            timeLimit={QUIZ_TIME_LIMIT}
+          />
+        ); // Line ~137
     }
   };
 
