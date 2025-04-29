@@ -31,7 +31,7 @@ A simple, interactive quiz application built using React, Vite, and Tailwind CSS
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/radherathod/quiz_app.git](https://github.com/radherathod/quiz_app.git)
+    git clone https://github.com/radherathod/quiz_app.git
     cd quiz_app
     ```
     *(Replace URL if your repository location is different)*
