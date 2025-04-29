@@ -1,9 +1,9 @@
 export const quizData = [
   {
-    id: 1, // Unique identifier for the question (useful for keys in React)
-    question: "What is the capital of France?", // The text of the question
-    options: ["Berlin", "Madrid", "Paris", "Lisbon"], // An array of possible answers
-    correctAnswer: "Paris", // The correct answer string (must match one of the options)
+    id: 1,
+    question: "What is the capital of France?",
+    options: ["Berlin", "Madrid", "Paris", "Lisbon"],
+    correctAnswer: "Paris",
   },
   {
     id: 2,
@@ -40,10 +40,8 @@ export const quizData = [
 export const QUIZ_TIME_LIMIT = 60;
 export const TIMEOUT_PENALTY = 1;
 
-//Helper Function (Placeholder)
+//Helper Function
 export const renderLatex = (text) => {
-  // Simple removal of $ delimiters for basic display.
-  // Return the original text if it's not a string (safety check)
   if (typeof text !== "string") {
     return text;
   }
