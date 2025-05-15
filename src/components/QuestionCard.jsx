@@ -1,3 +1,4 @@
+// /home/radhe/Projects/quiz_app/src/components/QuestionCard.jsx
 import React, { useEffect } from "react";
 import { renderLatex } from "../data/Questions";
 
@@ -6,30 +7,42 @@ function QuestionCard({
   onAnswerSelect,
   onNextQuestion,
   selectedAnswer,
-
   timeLeft,
-  setTimeLeft,
-  handleTimeOut,
+  setTimeLeft, // Prop to update time in App state
+  handleTimeOut, // Prop to call when time runs out
   questionNumber,
   totalQuestions,
 }) {
-  // Timer Effect - runs when timeLeft changes or component mounts/unmounts
+  // --- Timer Effect ---
   useEffect(() => {
-    if (timeLeft > 0 && selectedAnswer === null) {
-      const timer = setTimeout(() => {
-        setTimeLeft(timeLeft - 1);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else if (timeLeft === 0 && selectedAnswer === null) {
+    // If time is up, trigger the timeout handler in App.jsx
+    if (timeLeft <= 0) {
       handleTimeOut();
+      return; // Stop the effect here if time is up
     }
-  }, [timeLeft, setTimeLeft, selectedAnswer, handleTimeOut]);
+
+    // Set up the interval to decrease time by 1 second
+    const timer = setTimeout(() => {
+      setTimeLeft(timeLeft - 1); // Update time in App.jsx state
+    }, 1000);
+
+    // Cleanup: Clear the timeout when the component unmounts or timeLeft changes
+    // This prevents memory leaks and multiple timers running.
+    return () => clearTimeout(timer);
+
+    // Dependencies: Only re-run if timeLeft, setTimeLeft, or handleTimeOut changes.
+    // Crucially, selectedAnswer is NOT included here, so the timer keeps running after selection.
+  }, [timeLeft, setTimeLeft, handleTimeOut]);
+
+  // --- Rest of the component remains the same ---
 
   if (!questionData) {
     return <div>Loading question...</div>;
   }
 
   const { question, options, correctAnswer } = questionData;
+
+  // Function to determine button styling (no changes needed here)
   const getButtonClass = (option) => {
     if (selectedAnswer === null) {
       return "bg-white hover:bg-gray-100 border-gray-300 text-gray-800 cursor-pointer";
@@ -38,22 +51,18 @@ function QuestionCard({
     const isCorrect = option === correctAnswer;
 
     if (isSelected) {
-      // Style for the button the user actually clicked
       return isCorrect
         ? "bg-green-200 border-green-400 text-green-800 cursor-not-allowed"
         : "bg-red-200 border-red-400 text-red-800 cursor-not-allowed";
     } else if (isCorrect) {
-      // Style for the correct answer button when the user selected incorrectly
       return "bg-green-200 border-green-400 text-green-800 cursor-not-allowed";
     } else {
-      // Style for other incorrect, unselected options
       return "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed opacity-70";
     }
   };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl mx-auto">
-      {/* Optional: Display question number */}
       <div className="flex justify-between items-center mb-4">
         <div className="text-sm font-medium text-gray-500">
           Question {questionNumber} / {totalQuestions}
@@ -82,18 +91,15 @@ function QuestionCard({
         ))}
       </div>
 
-      {
-        <div className="text-center mt-6">
-          <button
-            onClick={onNextQuestion}
-            className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 cursor-pointer"
-          >
-            {questionNumber === totalQuestions
-              ? "Show Results"
-              : "Next Question"}
-          </button>
-        </div>
-      }
+      <div className="text-center mt-6">
+        <button
+          onClick={onNextQuestion}
+          className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={selectedAnswer === null}
+        >
+          {questionNumber === totalQuestions ? "Show Results" : "Next Question"}
+        </button>
+      </div>
     </div>
   );
 }

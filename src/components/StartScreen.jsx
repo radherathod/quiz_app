@@ -90,7 +90,7 @@ const ArrowRightIcon = () => (
   </svg>
 );
 
-function StartScreen({ onStartQuizb, totalQuestions, timeLimit }) {
+function StartScreen({ onStartQuiz, totalQuestions, timeLimit }) {
   return (
     // Glassmorphism Container
     <div className="bg-white/30 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-white/20 w-full max-w-xl mx-auto text-center">
@@ -102,7 +102,10 @@ function StartScreen({ onStartQuizb, totalQuestions, timeLimit }) {
       </p>
 
       {/* Details List with Icons */}
-      <ul className="space-y-4 text-left mb-10 text-lg text-gray-800 max-w-md mx-auto">
+      <ul
+        className="space-y-4 text-left mb-10 text-lg text-gray-800 max-w-sm
+-md mx-auto"
+      >
         <li className="flex items-center p-3 bg-white/50 rounded-lg shadow-sm border border-white/30">
           <ListIcon />
           <span>
@@ -128,7 +131,7 @@ function StartScreen({ onStartQuizb, totalQuestions, timeLimit }) {
 
       <button
         className="inline-flex items-center justify-center w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-700 text-white text-xl font-bold rounded-lg shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-300 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
-        onClick={onStartQuizb}
+        onClick={onStartQuiz}
       >
         Start Quiz
         <ArrowRightIcon />
